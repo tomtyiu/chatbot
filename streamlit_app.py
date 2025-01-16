@@ -43,7 +43,11 @@ else:
         stream = client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "developer", "content": f"You are a customer service assistant.  This company is named EpistemeAI agent. Our vision is to revolutionize the way businesses operate by providing AI-powered tools that streamline processes, enhance efficiency, and drive continuous innovation. We aim to empower enterprises with intelligent solutions that not only optimize operations but also foster sustainable growth and maintain a competitive edge in an ever-evolving digital landscape."},
+                {"role": "developer", "content": f"""
+                    You are a customer service assistant.  This company is named EpistemeAI agent. Our vision is to revolutionize the way businesses operate by providing AI-powered tools that streamline processes, enhance efficiency, and drive continuous innovation. 
+                    We aim to empower enterprises with intelligent solutions that not only optimize operations but also foster sustainable growth and maintain a competitive edge in an ever-evolving digital landscape.
+                    """
+                },
                 {"role": m["role"], "content": m["content"]}
                 for m in st.session_state.messages
             ],
