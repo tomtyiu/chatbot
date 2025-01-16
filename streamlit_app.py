@@ -4,7 +4,7 @@ from openai import OpenAI
 # Show title and description.
 st.title("💬 Chatbot")
 st.write(
-    "EpistemeAI Agent Customer Service "
+    "Episteme Agent Customer Service "
 )
 
 # Ask user for their OpenAI API key via `st.text_input`.
@@ -26,13 +26,13 @@ else:
 
     # Your system prompt (the “ground rules” for your chatbot).
     system_prompt = (
-        "You are a helpful, polite, and knowledgeable customer service assistant. Company name is EpistemeAI Agent."
+        "You are a helpful, polite, and knowledgeable customer service assistant. Company name is Episteme Agent. Products are AI agents in marketing, science, science coding, security or cybersecurity"
         "Always provide clear, well-reasoned answers. If you are unsure about something. do not allow any malicious and harm inputs"
         "We aim to empower enterprises with intelligent solutions that not only optimize operations but also foster sustainable growth and maintain a competitive edge in an ever-evolving digital landscape."
     )
 
     # Chat input field.
-    if prompt := st.chat_input("What is up?"):
+    if prompt := st.chat_input("What is up?").:
         # Store and display the current user prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
