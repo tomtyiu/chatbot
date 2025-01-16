@@ -40,7 +40,7 @@ else:
 
         # Generate a response using the OpenAI API, prepending the system message.
         stream = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": system_prompt}
             ] + st.session_state.messages,
