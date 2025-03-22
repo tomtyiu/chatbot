@@ -2,9 +2,9 @@ import streamlit as st
 from openai import OpenAI
 
 # Show title and description.
-st.title("💬 Chatbot")
+st.title("💬 Bible Chatbot")
 st.write(
-    "Episteme Agent Customer Service "
+    "BibleGPT: Christianity Search "
 )
 
 # Ask user for their OpenAI API key via `st.text_input`.
@@ -32,7 +32,7 @@ else:
     )
 
     # Chat input field.
-    if prompt := st.chat_input("What is up?").:
+    if prompt := st.chat_input("What is up?"):
         # Store and display the current user prompt.
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
@@ -40,7 +40,7 @@ else:
 
         # Generate a response using the OpenAI API, prepending the system message.
         stream = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o-mini-search-preview-2025-03-11",
             messages=[
                 {"role": "system", "content": system_prompt}
             ] + st.session_state.messages,
