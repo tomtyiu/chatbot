@@ -32,9 +32,26 @@ else:
     )
 
     # Chat input field.
+    file.id="94U2fPf3k9c9hNLfCwJy3o"
     if prompt := st.chat_input("What is up?"):
         # Store and display the current user prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.messages.append(
+            {
+                "role": "user", 
+                "content": [
+                    {
+                        "type": "file",
+                        "file": {
+                            "file_id": file.id,
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": prompt,
+                    },
+                ]
+            }
+        )
         with st.chat_message("user"):
             st.markdown(prompt)
 
