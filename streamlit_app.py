@@ -41,18 +41,21 @@ else:
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Generate a response using the OpenAI API, prepending the system message.
-        # Ask the model to use retrieval with the uploaded file.
-        stream = client.chat.completions.create(
-            model="gpt-4.1",
-            messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-            tools=[{"type": "retrieval"}],
-            tool_choice="auto",
-            file_ids=[file.id],
-            stream=True,
-        )
+        try:
+            # Generate a response using the OpenAI API, prepending the system message.
+            # Ask the model to use retrieval with the uploaded file.
+            stream = client.chat.completions.create(
+                model="gpt-4.1",
+                messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
+                tools=[{"type": "retrieval"}],
+                tool_choice="auto",
+                file_ids=[file.id],
+                stream=True,
+            )
 
-        # Stream the response to the chat using `st.write_stream`, then store it in session.
-        with st.chat_message("assistant"):
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            # Stream the response to the chat using `st.write_stream`, then store it in session.
+            with st.chat_message("assistant"):
+                response = st.write_stream(stream)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+        except Exception as e:
+            st.error("OpenAI API call failed: {}".format(e))

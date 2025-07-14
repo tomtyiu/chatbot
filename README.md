@@ -17,3 +17,7 @@ A simple Streamlit app that shows how to build a chatbot using OpenAI's GPT-3.5.
    ```
    $ streamlit run streamlit_app.py
    ```
+
+### Notes on Retrieval
+If you use a file for retrieval, keep its token size below the model's limit (about 1 million tokens for `gpt-4.1`).
+The app now catches API errors and displays them in the interface.
