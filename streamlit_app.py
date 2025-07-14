@@ -32,35 +32,23 @@ else:
     )
 
     # Chat input field.
+    # Retrieve the uploaded file that will be used for retrieval.
     file = client.files.retrieve("file-94U2fPf3k9c9hNLfCwJy3o")
+
     if prompt := st.chat_input("What is up?"):
         # Store and display the current user prompt.
-        st.session_state.messages.append(
-            {
-                "role": "user", 
-                "content": [
-                    {
-                        "type": "file",
-                        "file": {
-                            "file_id": file.id,
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "text": prompt,
-                    },
-                ]
-            }
-        )
+        st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
         # Generate a response using the OpenAI API, prepending the system message.
+        # Ask the model to use retrieval with the uploaded file.
         stream = client.chat.completions.create(
-            model="gpt-4.1",
-            messages=[
-                {"role": "system", "content": system_prompt}
-            ] + st.session_state.messages,
+            model="gpt-4-turbo",
+            messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
+            tools=[{"type": "retrieval"}],
+            tool_choice="auto",
+            file_ids=[file.id],
             stream=True,
         )
 
