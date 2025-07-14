@@ -44,7 +44,7 @@ else:
         # Generate a response using the OpenAI API, prepending the system message.
         # Ask the model to use retrieval with the uploaded file.
         stream = client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-4.1",
             messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
             tools=[{"type": "retrieval"}],
             tool_choice="auto",
