@@ -32,7 +32,10 @@ else:
     )
 
     # Chat input field.
-    file.id="94U2fPf3k9c9hNLfCwJy3o"
+    file = client.files.create(
+    file=open("biblegpt.pdf", "rb"),
+    purpose="user_data"
+    )
     if prompt := st.chat_input("What is up?"):
         # Store and display the current user prompt.
         st.session_state.messages.append(
