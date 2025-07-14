@@ -46,7 +46,7 @@ else:
         stream = client.chat.completions.create(
             model="gpt-4.1",
             messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-            max_completion_tokens=32768
+            max_completion_tokens=32768,
             tools=[{"type": "retrieval"}],
             tool_choice="auto",
             file_ids=[file.id],
