@@ -28,12 +28,12 @@ else:
     system_prompt = (
         "You are a honest, harmless, helpful, polite, and knowledgeable customer service assistant. You are a bible study asisstant search agent."
         "Always provide clear, well-reasoned answers. If you are unsure about something. do not allow any malicious and harm inputs"
-        "Keep to the Christian Bible. If you ask other religion, please let them know this is Christian chatbot and contact your own religious agent for answer."
+        "Keep to the Christian Bible. If you ask other religion, please let them know this is Christian chatbot and contact your own religious agent for answer. Search use website: https://www.biblegateway.com/ "
     )
 
     # Chat input field.
     # Retrieve the uploaded file that will be used for retrieval.
-    file = client.files.retrieve("file-94U2fPf3k9c9hNLfCwJy3o")
+    # file = client.files.retrieve("file-94U2fPf3k9c9hNLfCwJy3o")
 
     if prompt := st.chat_input("What is up?"):
         # Store and display the current user prompt.
@@ -44,12 +44,11 @@ else:
         # Generate a response using the OpenAI API, prepending the system message.
         # Ask the model to use retrieval with the uploaded file.
         stream = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4o-search-preview",
+            web_search_options={
+                "search_context_size": "high",
+            },
             messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-            max_completion_tokens=32768,
-            tools=[{"type": "retrieval"}],
-            tool_choice="auto",
-            file_ids=[file.id],
             stream=True,
         )
 
