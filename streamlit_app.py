@@ -2,9 +2,9 @@ import streamlit as st
 from openai import OpenAI
 
 # Show title and description.
-st.title("💬 Bible Chatbot")
+st.title("💬 Bible search Chatbot")
 st.write(
-    "BibleGPT: Christianity Search "
+    "Bible.AI: Christianity Search "
 )
 
 # Ask user for their OpenAI API key via `st.text_input`.
