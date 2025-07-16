@@ -1,3 +1,4 @@
+import html
 import streamlit as st
 from openai import OpenAI
 
@@ -22,7 +23,7 @@ else:
     # Display the existing chat messages.
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+            st.write(message["content"])
 
     # Your system prompt (the “ground rules” for your chatbot).
     system_prompt = (
@@ -36,23 +37,32 @@ else:
     # file = client.files.retrieve("file-94U2fPf3k9c9hNLfCwJy3o")
 
     if prompt := st.chat_input("What is up?"):
-        # Store and display the current user prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+        # Check the input with OpenAI's moderation API.
+        mod = client.moderations.create(input=prompt)
+        if mod.results[0].flagged:
+            st.warning("Prompt was flagged by moderation and was not sent.")
+        else:
+            # Store and display the current user prompt.
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.write(prompt)
 
-        # Generate a response using the OpenAI API, prepending the system message.
-        # Ask the model to use retrieval with the uploaded file.
-        stream = client.chat.completions.create(
-            model="gpt-4o-search-preview",
-            web_search_options={
-                "search_context_size": "high",
-            },
-            messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-            stream=True,
-        )
+            # Generate a response using the OpenAI API, prepending the system message.
+            stream = client.chat.completions.create(
+                model="gpt-4o-search-preview",
+                web_search_options={"search_context_size": "low"},
+                messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
+                stream=True,
+            )
 
-        # Stream the response to the chat using `st.write_stream`, then store it in session.
-        with st.chat_message("assistant"):
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            # Stream the response to the chat using `st.write_stream`.
+            with st.chat_message("assistant"):
+                response = st.write_stream(stream)
+
+            # Moderate the output before saving it.
+            output_mod = client.moderations.create(input=response)
+            if output_mod.results[0].flagged:
+                st.warning("Response was flagged by moderation and hidden.")
+            else:
+                st.session_state.messages.append({"role": "assistant", "content": response})
+
